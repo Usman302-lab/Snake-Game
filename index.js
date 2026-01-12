@@ -5,42 +5,79 @@ document.addEventListener('DOMContentLoaded', function () {
     const cellSize = 20;
     let score = 0;
     let gameStarted = false;
-    let food = { x: 300, y: 200 };
-    let snake = [{x: 160, y: 200}, {x: 140, y: 200}, {x: 120, y: 200}];
-
+     let snake = [{x: 160, y: 200}, {x: 140, y: 200}, {x: 120, y: 200}];
+    
+    // Fruit types with different scores
+    const fruitTypes = [
+        { class: 'apple', color: 'red', score: 10 },
+        { class: 'orange', color: 'orange', score: 15 },
+        { class: 'berry', color: 'pink', score: 20 },
+        { class: 'grape', color: 'purple', score: 25 }
+    ];
+    
+    let currentFruit = generateFruit();
     let dx = cellSize;
     let dy = 0;
     let intervalId;
     let gameSpeed = 200;
+    let hasPoisonousFins = false;
     
-    function moveFood() {
+    function generateFruit() {
         let newX, newY;
+        let fruitType;
+        
         do {
             newX = Math.floor(Math.random() * (arenaSize / cellSize)) * cellSize;
             newY = Math.floor(Math.random() * (arenaSize / cellSize)) * cellSize;
+            fruitType = fruitTypes[Math.floor(Math.random() * fruitTypes.length)];
         } while(snake.some(snakeCell => snakeCell.x === newX && snakeCell.y === newY));
-        food = { x: newX, y: newY };
+        
+        return {
+            x: newX,
+            y: newY,
+            type: fruitType.class,
+            color: fruitType.color,
+            score: fruitType.score
+        };
     }
     
     function updateSnake() {
         const newHead = { x: snake[0].x + dx, y: snake[0].y + dy };
         snake.unshift(newHead);
 
-        if(newHead.x === food.x && newHead.y === food.y) {
-            score += 10;
-            moveFood();
-            if(gameSpeed > 50) {
+        // Check collision with fruit
+        if(newHead.x === currentFruit.x && newHead.y === currentFruit.y) {
+            // Eating effect
+            const headElement = document.querySelector('.snake-head');
+            if(headElement) {
+                headElement.classList.add('eating');
+                setTimeout(() => headElement.classList.remove('eating'), 300);
+            }
+            
+            score += currentFruit.score;
+            currentFruit = generateFruit();
+            
+            // Add poisonous fins every 3rd fruit eaten
+            if(score % (currentFruit.score * 3) === 0) {
+                hasPoisonousFins = true;
+                setTimeout(() => {
+                    hasPoisonousFins = false;
+                }, 5000); // Fins last for 5 seconds
+            }
+            
+            // Increase speed
+            if(gameSpeed > 80) {
                 clearInterval(intervalId);
-                gameSpeed -= 10;
+                gameSpeed -= 5;
                 gameLoop();
             }
+
         } else {
             snake.pop();
         }
     }
 
     function changeDirection(e) {
-        // Prevent default arrow key scrolling
         if(['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
             e.preventDefault();
         }
@@ -73,68 +110,124 @@ document.addEventListener('DOMContentLoaded', function () {
         return divElement;
     }
 
+    function addEyes(headElement) {
+        const leftEye = document.createElement('div');
+        const rightEye = document.createElement('div');
+        
+        leftEye.classList.add('eye', 'left');
+        rightEye.classList.add('eye', 'right');
+        
+        headElement.appendChild(leftEye);
+        headElement.appendChild(rightEye);
+    }
+
+    function addFins(snakeElement, index) {
+        if(!hasPoisonousFins || index === 0 || index === snake.length - 1) return;
+        
+        // Add poisonous fins to body segments
+        const fins = ['fin-top', 'fin-bottom', 'fin-left', 'fin-right'];
+        fins.forEach(finClass => {
+            const fin = document.createElement('div');
+            fin.classList.add('fin', finClass, 'poison-pulse');
+            snakeElement.appendChild(fin);
+        });
+    }
+
     function drawFoodAndSnake() {
         gameArena.innerHTML = '';
 
-        // Draw snake with different styling for head, body, and tail
+        // Draw snake
         snake.forEach((snakeCell, index) => {
             let className;
             if(index === 0) {
                 className = 'snake-head';
-                // Add eyes to snake head based on direction
                 const headElement = drawDiv(snakeCell.x, snakeCell.y, className);
-                
-                // Create eyes based on direction
-                const eyeStyle = 'position:absolute;width:4px;height:4px;background-color:black;border-radius:50%;';
-                const leftEye = document.createElement('div');
-                const rightEye = document.createElement('div');
-                
-                if(dx > 0) { // Moving right
-                    leftEye.style.cssText = eyeStyle + 'top:4px;left:12px;';
-                    rightEye.style.cssText = eyeStyle + 'top:12px;left:12px;';
-                } else if(dx < 0) { // Moving left
-                    leftEye.style.cssText = eyeStyle + 'top:4px;left:4px;';
-                    rightEye.style.cssText = eyeStyle + 'top:12px;left:4px;';
-                } else if(dy > 0) { // Moving down
-                    leftEye.style.cssText = eyeStyle + 'top:12px;left:4px;';
-                    rightEye.style.cssText = eyeStyle + 'top:12px;left:12px;';
-                } else if(dy < 0) { // Moving up
-                    leftEye.style.cssText = eyeStyle + 'top:4px;left:4px;';
-                    rightEye.style.cssText = eyeStyle + 'top:4px;left:12px;';
-                }
-                
-                headElement.appendChild(leftEye);
-                headElement.appendChild(rightEye);
+                addEyes(headElement);
+                addFins(headElement, index);
                 gameArena.appendChild(headElement);
-                
             } else if(index === snake.length - 1) {
                 className = 'snake-tail';
-                gameArena.appendChild(drawDiv(snakeCell.x, snakeCell.y, className));
+                const tailElement = drawDiv(snakeCell.x, snakeCell.y, className);
+                addFins(tailElement, index);
+                gameArena.appendChild(tailElement);
             } else {
                 className = 'snake-body';
-                gameArena.appendChild(drawDiv(snakeCell.x, snakeCell.y, className));
+                const bodyElement = drawDiv(snakeCell.x, snakeCell.y, className);
+                addFins(bodyElement, index);
+                gameArena.appendChild(bodyElement);
             }
         });
 
-        const foodElement = drawDiv(food.x, food.y, 'food');
-        gameArena.appendChild(foodElement);
+        // Draw fruit
+        const fruitElement = drawDiv(currentFruit.x, currentFruit.y, 'fruit');
+        fruitElement.classList.add(currentFruit.type);
+        gameArena.appendChild(fruitElement);
     }
 
     function isGameOver() {
-        // Snake collision with itself
+        // Self collision check
         for(let i = 1; i < snake.length; i++) {
             if(snake[0].x === snake[i].x && snake[0].y === snake[i].y) {
                 return true;
             }
         }
 
-        // Fixed wall collision - check if head is EXACTLY at or outside walls
+        // Wall collision check
         const hitLeftWall = snake[0].x < 0;
-        const hitRightWall = snake[0].x >= arenaSize; // Fixed: >= instead of >
+        const hitRightWall = snake[0].x >= arenaSize;
         const hitTopWall = snake[0].y < 0;
-        const hitBottomWall = snake[0].y >= arenaSize; // Fixed: >= instead of >
+        const hitBottomWall = snake[0].y >= arenaSize;
         
         return hitLeftWall || hitRightWall || hitTopWall || hitBottomWall;
+    }
+
+    function showCollisionEffect() {
+        const headElement = document.querySelector('.snake-head');
+        if(headElement) {
+            headElement.classList.add('collision');
+            gameArena.classList.add('game-over');
+            
+            // Create explosion particles
+            for(let i = 0; i < 10; i++) {
+                const particle = document.createElement('div');
+                particle.style.position = 'absolute';
+                particle.style.width = '8px';
+                particle.style.height = '8px';
+                particle.style.background = 'radial-gradient(circle, #ff0000, #ff4500)';
+                particle.style.borderRadius = '50%';
+                particle.style.top = `${snake[0].y + 10}px`;
+                particle.style.left = `${snake[0].x + 10}px`;
+                particle.style.zIndex = '100';
+                particle.style.boxShadow = '0 0 10px #ff0000';
+                
+                const angle = Math.random() * Math.PI * 2;
+                const speed = 5 + Math.random() * 10;
+                const vx = Math.cos(angle) * speed;
+                const vy = Math.sin(angle) * speed;
+                
+                gameArena.appendChild(particle);
+                
+                // Animate particle
+                let posX = snake[0].x + 10;
+                let posY = snake[0].y + 10;
+                let opacity = 1;
+                
+                const particleInterval = setInterval(() => {
+                    posX += vx;
+                    posY += vy;
+                    opacity -= 0.05;
+                    
+                    particle.style.left = `${posX}px`;
+                    particle.style.top = `${posY}px`;
+                    particle.style.opacity = opacity;
+                    
+                    if(opacity <= 0) {
+                        clearInterval(particleInterval);
+                        particle.remove();
+                    }
+                }, 30);
+            }
+        }
     }
 
     function gameLoop(){
@@ -143,8 +236,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 clearInterval(intervalId);
                 gameStarted = false;
                 document.removeEventListener('keydown', changeDirection);
-                alert('Game Over!\nYour Score: ' + score);
-                location.reload(); // Reload to restart
+                
+                // Show collision effect
+                showCollisionEffect();
+                
+                setTimeout(() => {
+                    alert(`Game Over!\nFinal Score: ${score}\n\nFruits Collected: ${Math.floor(score / 10)}`);
+                    location.reload();
+                }, 1000);
                 return;
             }
             updateSnake();
@@ -163,7 +262,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function drawScoreBoard() {
         const scoreBoard = document.getElementById('score-board');
-        scoreBoard.textContent = `Score: ${score}`;
+        scoreBoard.textContent = `Score: ${score} ${hasPoisonousFins ? '⚡' : ''}`;
+        scoreBoard.style.color = currentFruit.color;
     }
 
     function initiateGame(){
@@ -183,6 +283,32 @@ document.addEventListener('DOMContentLoaded', function () {
         
         // Draw initial state
         drawFoodAndSnake();
+        
+        // Instructions
+        const instructions = document.createElement('div');
+        instructions.style.cssText = `
+            color: #fff;
+            margin-top: 20px;
+            font-size: 14px;
+            background: rgba(0,0,0,0.5);
+            padding: 10px;
+            border-radius: 10px;
+            max-width: 600px;
+        `;
+        instructions.innerHTML = `
+            <strong>🎯 How to Play:</strong><br>
+            • Use arrow keys to control the snake<br>
+            • Eat fruits to score points (different fruits = different points!)<br>
+            • ⚡ Get poisonous fins by eating 3 fruits in a row<br>
+            • Avoid hitting walls or yourself<br>
+            <br>
+            <strong>🍎 Fruits:</strong><br>
+            • 🍎 Apple: 10 points<br>
+            • 🍊 Orange: 15 points<br>
+            • 🍓 Berry: 20 points<br>
+            • 🍇 Grape: 25 points
+        `;
+        document.body.appendChild(instructions);
     }
 
     initiateGame();

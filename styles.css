@@ -4,98 +4,292 @@ body {
     align-items: center;
     justify-content: center;
     height: 100vh;
-    background-color: antiquewhite;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
     text-align: center;
     margin: 0;
     padding: 0;
-    overflow: hidden; /* Prevent scrollbars */
+    overflow: hidden;
+    font-family: 'Arial', sans-serif;
 }
 
 #game-arena {
     width: 600px;
     height: 600px;
-    background-color: #333;
+    background-color: #0f3460;
     position: relative;
-    border: 5px solid #666;
+    border: 8px solid #e94560;
     margin-bottom: 20px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-    overflow: hidden; /* Prevent any overflow */
+    box-shadow: 0 0 40px rgba(233, 69, 96, 0.4);
+    overflow: hidden;
+    border-radius: 10px;
 }
 
 #score-board {
-    font-size: x-large;
+    font-size: 28px;
     font-weight: bold;
-    color: black;
-    margin: 10px 0;
-    height: 30px;
+    color: #fff;
+    margin: 15px 0;
+    height: 40px;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    background: rgba(233, 69, 96, 0.2);
+    padding: 10px 30px;
+    border-radius: 25px;
+    border: 2px solid #e94560;
 }
 
 .start-button {
-    background-color: orangered;
+    background: linear-gradient(45deg, #e94560, #ff6b8b);
     color: white;
-    padding: 15px 30px;
+    padding: 18px 40px;
     text-align: center;
     text-decoration: none;
-    font-size: 18px;
-    margin: 4px 0;
+    font-size: 22px;
+    font-weight: bold;
+    margin: 10px 0;
     cursor: pointer;
     border: none;
-    border-radius: 6px;
-    transition: background-color 0.3s;
+    border-radius: 50px;
+    transition: all 0.3s;
+    box-shadow: 0 5px 15px rgba(233, 69, 96, 0.4);
+    letter-spacing: 1px;
 }
 
 .start-button:hover {
-    background-color: #ff4500cc;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(233, 69, 96, 0.6);
+    background: linear-gradient(45deg, #ff6b8b, #e94560);
 }
 
-.food {
+.start-button:active {
+    transform: translateY(-1px);
+}
+
+/* Fruit Food Styling */
+.fruit {
     width: 18px;
     height: 18px;
-    background-color: red;
     position: absolute;
     border-radius: 50%;
-    animation: blink 1s infinite;
-    box-shadow: 0 0 10px rgba(255, 0, 0, 0.7);
-    border: 1px solid #ffcccc;
+    animation: float 2s infinite ease-in-out;
+    box-shadow: 0 0 15px currentColor;
+    z-index: 5;
+}
+
+.fruit::before {
+    content: '';
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: #8b4513;
+    top: -3px;
+    left: 7px;
+    border-radius: 50%;
+}
+
+.fruit::after {
+    content: '';
+    position: absolute;
+    width: 2px;
+    height: 8px;
+    background: #228b22;
+    top: -8px;
+    left: 8px;
+    border-radius: 2px;
+    transform: rotate(15deg);
+}
+
+.apple {
+    background: radial-gradient(circle at 30% 30%, #ff4444, #cc0000);
+    border: 1px solid #990000;
+}
+
+.orange {
+    background: radial-gradient(circle at 30% 30%, #ffa500, #ff8c00);
+    border: 1px solid #cc7000;
+}
+
+.berry {
+    background: radial-gradient(circle at 30% 30%, #ff69b4, #c71585);
+    border: 1px solid #900060;
+    width: 16px;
+    height: 16px;
+}
+
+.grape {
+    background: radial-gradient(circle at 30% 30%, #9370db, #663399);
+    border: 1px solid #4b0082;
+    width: 14px;
+    height: 14px;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0) rotate(0deg);
+    }
+    50% {
+        transform: translateY(-5px) rotate(5deg);
+    }
 }
 
 @keyframes blink {
     0%, 100% {
+        opacity: 1;
         transform: scale(1);
-        box-shadow: 0 0 10px rgba(255, 0, 0, 0.7);
     }
     50% {
+        opacity: 0.8;
         transform: scale(1.1);
-        box-shadow: 0 0 20px rgba(255, 0, 0, 1);
     }
 }
 
-/* Snake styling */
+/* Snake Styling */
 .snake-head {
-    width: 20px;
-    height: 20px;
-    background-color: #00ff00;
+    width: 22px;
+    height: 22px;
+    background: linear-gradient(135deg, #00ff00, #32cd32);
     position: absolute;
-    border-radius: 4px;
-    box-shadow: 0 0 8px rgba(0, 255, 0, 0.8);
-    z-index: 2;
+    border-radius: 6px;
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.7);
+    z-index: 10;
+    transition: all 0.1s;
+}
+
+.snake-head.collision {
+    animation: snakeHit 0.5s ease-in-out 3;
+    background: linear-gradient(135deg, #ff0000, #ff4500) !important;
+}
+
+.snake-head.eating {
+    animation: eatingEffect 0.3s ease-in-out;
 }
 
 .snake-body {
     width: 20px;
     height: 20px;
-    background-color: #32cd32;
+    background: linear-gradient(135deg, #32cd32, #228b22);
     position: absolute;
-    border-radius: 3px;
-    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
-    z-index: 1;
+    border-radius: 4px;
+    z-index: 3;
+    box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.3);
 }
 
 .snake-tail {
-    width: 20px;
-    height: 20px;
-    background-color: #228b22;
+    width: 18px;
+    height: 18px;
+    background: linear-gradient(135deg, #228b22, #006400);
     position: absolute;
-    border-radius: 6px 3px 3px 6px;
-    z-index: 1;
+    border-radius: 3px 8px 8px 3px;
+    z-index: 2;
+}
+
+/* Poisonous Fins */
+.fin {
+    position: absolute;
+    background: linear-gradient(45deg, #ff00ff, #9400d3);
+    border-radius: 50%;
+    box-shadow: 0 0 8px #ff00ff;
+    z-index: 4;
+}
+
+.fin-top {
+    width: 10px;
+    height: 6px;
+    top: -4px;
+    left: 6px;
+}
+
+.fin-bottom {
+    width: 10px;
+    height: 6px;
+    bottom: -4px;
+    left: 6px;
+}
+
+.fin-left {
+    width: 6px;
+    height: 10px;
+    top: 6px;
+    left: -4px;
+}
+
+.fin-right {
+    width: 6px;
+    height: 10px;
+    top: 6px;
+    right: -4px;
+}
+
+/* Snake Eyes */
+.eye {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background-color: #000;
+    border-radius: 50%;
+    z-index: 11;
+}
+
+.eye.left {
+    top: 5px;
+    left: 5px;
+}
+
+.eye.right {
+    top: 5px;
+    right: 5px;
+}
+
+/* Effects */
+@keyframes snakeHit {
+    0%, 100% {
+        transform: scale(1) rotate(0deg);
+        box-shadow: 0 0 20px rgba(255, 0, 0, 0.8);
+    }
+    25% {
+        transform: scale(1.2) rotate(-5deg);
+        box-shadow: 0 0 30px rgba(255, 0, 0, 1);
+    }
+    50% {
+        transform: scale(1) rotate(5deg);
+        box-shadow: 0 0 40px rgba(255, 0, 0, 1);
+    }
+    75% {
+        transform: scale(1.2) rotate(-5deg);
+        box-shadow: 0 0 30px rgba(255, 0, 0, 1);
+    }
+}
+
+@keyframes eatingEffect {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.3);
+    }
+}
+
+@keyframes poisonPulse {
+    0%, 100% {
+        opacity: 0.7;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.2);
+    }
+}
+
+.poison-pulse {
+    animation: poisonPulse 1s infinite;
+}
+
+/* Game Over Effect */
+.game-over {
+    animation: arenaShake 0.5s ease-in-out;
+}
+
+@keyframes arenaShake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+    20%, 40%, 60%, 80% { transform: translateX(5px); }
 }
