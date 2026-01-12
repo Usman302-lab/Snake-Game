@@ -6,6 +6,9 @@ body {
     height: 100vh;
     background-color: antiquewhite;
     text-align: center;
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* Prevent scrollbars */
 }
 
 #game-arena {
@@ -16,6 +19,7 @@ body {
     border: 5px solid #666;
     margin-bottom: 20px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    overflow: hidden; /* Prevent any overflow */
 }
 
 #score-board {
@@ -23,6 +27,7 @@ body {
     font-weight: bold;
     color: black;
     margin: 10px 0;
+    height: 30px;
 }
 
 .start-button {
@@ -36,27 +41,61 @@ body {
     cursor: pointer;
     border: none;
     border-radius: 6px;
+    transition: background-color 0.3s;
+}
+
+.start-button:hover {
+    background-color: #ff4500cc;
 }
 
 .food {
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
     background-color: red;
     position: absolute;
     border-radius: 50%;
     animation: blink 1s infinite;
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.7);
+    border: 1px solid #ffcccc;
 }
 
 @keyframes blink {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 0 10px rgba(255, 0, 0, 0.7);
+    }
     50% {
-        opacity: 0.5;
+        transform: scale(1.1);
+        box-shadow: 0 0 20px rgba(255, 0, 0, 1);
     }
 }
 
-.snake {
+/* Snake styling */
+.snake-head {
     width: 20px;
     height: 20px;
-    background-color: chartreuse;
+    background-color: #00ff00;
     position: absolute;
-    border-radius: 5px;
+    border-radius: 4px;
+    box-shadow: 0 0 8px rgba(0, 255, 0, 0.8);
+    z-index: 2;
+}
+
+.snake-body {
+    width: 20px;
+    height: 20px;
+    background-color: #32cd32;
+    position: absolute;
+    border-radius: 3px;
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
+    z-index: 1;
+}
+
+.snake-tail {
+    width: 20px;
+    height: 20px;
+    background-color: #228b22;
+    position: absolute;
+    border-radius: 6px 3px 3px 6px;
+    z-index: 1;
 }
