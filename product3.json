@@ -1,0 +1,54 @@
+{
+  "products": [
+    {
+      "id": 201,
+      "name": "Wireless Mouse",
+      "category": "Electronics",
+      "price": 25.99,
+      "stock": 350,
+      "description": "Ergonomic wireless mouse with adjustable DPI and long battery life.",
+      "tags": ["mouse", "wireless", "electronics"],
+      "inStock": true
+    },
+    {
+      "id": 202,
+      "name": "Running Shoes",
+      "category": "Footwear",
+      "price": 79.99,
+      "stock": 120,
+      "description": "Lightweight running shoes with breathable mesh and cushioned sole.",
+      "tags": ["shoes", "running", "sports"],
+      "inStock": true
+    },
+    {
+      "id": 203,
+      "name": "Ceramic Coffee Mug",
+      "category": "Kitchen",
+      "price": 12.5,
+      "stock": 500,
+      "description": "350ml ceramic coffee mug, microwave and dishwasher safe.",
+      "tags": ["mug", "coffee", "kitchen"],
+      "inStock": true
+    },
+    {
+      "id": 204,
+      "name": "Smart Watch",
+      "category": "Electronics",
+      "price": 149.0,
+      "stock": 75,
+      "description": "Fitness tracking smart watch with heart rate monitor and GPS.",
+      "tags": ["watch", "smart", "fitness"],
+      "inStock": true
+    },
+    {
+      "id": 205,
+      "name": "Leather Wallet",
+      "category": "Accessories",
+      "price": 39.99,
+      "stock": 0,
+      "description": "Genuine leather bifold wallet with RFID blocking technology.",
+      "tags": ["wallet", "leather", "accessory"],
+      "inStock": false
+    }
+  ]
+}
