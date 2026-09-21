@@ -1,0 +1,54 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "name": "Wireless Mouse",
+      "category": "Electronics",
+      "price": 25.99,
+      "stock": 150,
+      "description": "Ergonomic wireless mouse with adjustable DPI settings.",
+      "tags": ["wireless", "mouse", "accessory"],
+      "inStock": true
+    },
+    {
+      "id": 2,
+      "name": "Mechanical Keyboard",
+      "category": "Electronics",
+      "price": 89.5,
+      "stock": 75,
+      "description": "RGB backlit mechanical keyboard with blue switches.",
+      "tags": ["keyboard", "mechanical", "rgb"],
+      "inStock": true
+    },
+    {
+      "id": 3,
+      "name": "Coffee Mug",
+      "category": "Kitchen",
+      "price": 12.0,
+      "stock": 300,
+      "description": "Ceramic coffee mug with a 12oz capacity.",
+      "tags": ["mug", "kitchen", "ceramic"],
+      "inStock": true
+    },
+    {
+      "id": 4,
+      "name": "Running Shoes",
+      "category": "Footwear",
+      "price": 65.75,
+      "stock": 0,
+      "description": "Lightweight running shoes with breathable mesh.",
+      "tags": ["shoes", "running", "sports"],
+      "inStock": false
+    },
+    {
+      "id": 5,
+      "name": "Notebook",
+      "category": "Stationery",
+      "price": 4.99,
+      "stock": 500,
+      "description": "A5 lined notebook with 200 pages.",
+      "tags": ["notebook", "stationery", "paper"],
+      "inStock": true
+    }
+  ]
+}
