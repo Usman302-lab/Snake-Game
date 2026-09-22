@@ -1,0 +1,54 @@
+{
+  "products": [
+    {
+      "id": 101,
+      "name": "Bluetooth Headphones",
+      "category": "Electronics",
+      "price": 59.99,
+      "stock": 220,
+      "description": "Over-ear Bluetooth headphones with active noise cancellation.",
+      "tags": ["bluetooth", "headphones", "audio"],
+      "inStock": true
+    },
+    {
+      "id": 102,
+      "name": "Yoga Mat",
+      "category": "Fitness",
+      "price": 22.5,
+      "stock": 180,
+      "description": "Non-slip yoga mat with 6mm thickness for extra comfort.",
+      "tags": ["yoga", "fitness", "mat"],
+      "inStock": true
+    },
+    {
+      "id": 103,
+      "name": "Stainless Steel Water Bottle",
+      "category": "Kitchen",
+      "price": 18.75,
+      "stock": 400,
+      "description": "Insulated 1L stainless steel bottle, keeps drinks cold for 24h.",
+      "tags": ["bottle", "kitchen", "steel"],
+      "inStock": true
+    },
+    {
+      "id": 104,
+      "name": "Desk Lamp",
+      "category": "Home",
+      "price": 34.0,
+      "stock": 90,
+      "description": "LED desk lamp with adjustable brightness and color temperature.",
+      "tags": ["lamp", "led", "home"],
+      "inStock": true
+    },
+    {
+      "id": 105,
+      "name": "Backpack",
+      "category": "Accessories",
+      "price": 45.0,
+      "stock": 0,
+      "description": "Water-resistant backpack with laptop compartment.",
+      "tags": ["backpack", "travel", "accessory"],
+      "inStock": false
+    }
+  ]
+}
