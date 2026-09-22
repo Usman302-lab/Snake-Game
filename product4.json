@@ -1,0 +1,54 @@
+{
+  "products": [
+    {
+      "id": 301,
+      "name": "Mechanical Keyboard",
+      "category": "Electronics",
+      "price": 89.99,
+      "stock": 150,
+      "description": "RGB backlit mechanical keyboard with blue switches.",
+      "tags": ["keyboard", "mechanical", "electronics"],
+      "inStock": true
+    },
+    {
+      "id": 302,
+      "name": "Dumbbell Set",
+      "category": "Fitness",
+      "price": 65.0,
+      "stock": 80,
+      "description": "Adjustable dumbbell set ranging from 5 to 25 lbs.",
+      "tags": ["dumbbell", "fitness", "weights"],
+      "inStock": true
+    },
+    {
+      "id": 303,
+      "name": "Cast Iron Skillet",
+      "category": "Kitchen",
+      "price": 34.5,
+      "stock": 200,
+      "description": "Pre-seasoned 12-inch cast iron skillet, oven safe.",
+      "tags": ["skillet", "kitchen", "cookware"],
+      "inStock": true
+    },
+    {
+      "id": 304,
+      "name": "Table Lamp",
+      "category": "Home",
+      "price": 42.0,
+      "stock": 110,
+      "description": "Modern table lamp with fabric shade and touch dimmer.",
+      "tags": ["lamp", "home", "lighting"],
+      "inStock": true
+    },
+    {
+      "id": 305,
+      "name": "Sunglasses",
+      "category": "Accessories",
+      "price": 55.0,
+      "stock": 0,
+      "description": "Polarized UV400 sunglasses with lightweight metal frame.",
+      "tags": ["sunglasses", "accessory", "eyewear"],
+      "inStock": false
+    }
+  ]
+}
